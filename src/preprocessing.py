@@ -60,7 +60,7 @@ def correlation_data(df):
         "Automation Capacity Rating",
         "Core Skill Rating",
         "Enjoyment Rating",
-        "Human Agency Scale Rating",
+        "Human Agency Scale Rating_x",
         "Importance"
     ]
 
@@ -72,8 +72,11 @@ def automation_reasons(df):
 
     result = (
         df[reason_cols]
+        .apply(pd.to_numeric, errors="coerce")
+        .fillna(0)
         .sum()
         .sort_values(ascending=False)
+        .astype(float)
         .reset_index()
     )
 

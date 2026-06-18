@@ -1,5 +1,6 @@
 import plotly.express as px
 import plotly.graph_objects as go
+import pandas as pd
 
 def histogram(df, column):
 
@@ -43,6 +44,7 @@ def heatmap(corr):
     return fig
 
 def pie(df):
+    df["Count"] = pd.to_numeric(df["Count"], errors="coerce").fillna(0)
 
     fig = px.pie(
         df,
