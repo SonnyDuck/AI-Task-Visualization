@@ -9,6 +9,10 @@ def histogram(df, column):
         x=column,
         nbins=20
     )
+    fig.update_layout(
+        template="plotly_white",
+        height=450
+    )
 
     return fig
 
@@ -18,6 +22,10 @@ def bar(df, x, y):
         df,
         x=x,
         y=y
+    )
+    fig.update_layout(
+        template="plotly_white",
+        height=450
     )
 
     return fig
@@ -30,6 +38,10 @@ def scatter(df):
         y="Automation Capacity Rating",
         color="Occupation (O*NET-SOC Title)"
     )
+    fig.update_layout(
+        template="plotly_white",
+        height=500
+    )
 
     return fig
 
@@ -40,6 +52,10 @@ def heatmap(corr):
         text_auto=True,
         aspect="auto"
     )
+    fig.update_layout(
+        template="plotly_white",
+        height=500
+)
 
     return fig
 
@@ -51,5 +67,9 @@ def pie(df):
         names="Reason",
         values="Count"
     )
+    fig.update_layout(
+        template="plotly_white",
+        height=450
+)
 
     return fig

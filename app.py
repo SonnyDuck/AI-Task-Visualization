@@ -3,6 +3,12 @@ import streamlit as st
 from src.preprocessing import *
 from src.visualization import *
 
+tab1, tab2, tab3 = st.tabs([
+    "📊 Dashboard",
+    "📈 Statistics",
+    "🗂 Dataset"
+])
+
 st.set_page_config(
     page_title="AI Task Visualization",
     page_icon="📊",
@@ -19,6 +25,18 @@ st.markdown(
     Interactive dashboard built with Streamlit and Plotly.
     """
 )
+
+with st.expander("📌 About Dataset"):
+
+    st.markdown("""
+    This dashboard explores workers' perceptions of AI automation.
+
+    **Dataset includes:**
+    - Worker preferences
+    - Expert AI capability ratings
+    - Occupation metadata
+    - Demographic information
+    """)
 
 st.sidebar.header("Filters")
 
@@ -71,51 +89,55 @@ col4.metric(
 )
 
 
-st.subheader("Automation Desire Distribution")
+col1, col2 = st.columns(2)
 
-fig = histogram(
-    df,
-    "Automation Desire Rating"
-)
+with col1:
+    st.subheader("Automation Desire Distribution")
 
-st.plotly_chart(
-    fig,
-    use_container_width=True
-)
+    fig = histogram(
+        df,
+        "Automation Desire Rating"
+    )
 
+    st.plotly_chart(fig, use_container_width=True)
 
-st.subheader("Top Occupations")
+with col2:
+    st.subheader("Top Occupations")
 
-top = top_occupations(
-    df,
-    top_n
-)
+    top = top_occupations(df, top_n)
 
-fig = bar(
-    top,
-    "Occupation (O*NET-SOC Title)",
-    "Automation Desire Rating"
-)
+    fig = bar(
+        top,
+        "Occupation (O*NET-SOC Title)",
+        "Automation Desire Rating"
+    )
 
-st.plotly_chart(
-    fig,
-    use_container_width=True
-)
+    st.plotly_chart(fig, use_container_width=True)
 
 
-st.subheader("Automation Desire vs AI Capability")
+col1, col2 = st.columns(2)
 
-scatter_df = scatter_dataset(df)
+with col1:
 
-fig = scatter(scatter_df)
+    st.subheader("Automation Desire vs AI Capability")
 
-st.plotly_chart(
-    fig,
-    use_container_width=True
-)
+    scatter_df = scatter_dataset(df)
 
+    fig = scatter(scatter_df)
 
-st.subheader("Correlation")
+    st.plotly_chart(fig, use_container_width=True)
+
+with col2:
+
+    st.subheader("Reasons for Automation")
+
+    reason = automation_reasons(df)
+
+    fig = pie(reason)
+
+    st.plotly_chart(fig, use_container_width=True)
+
+st.subheader("Correlation Matrix")
 
 corr = correlation_data(df)
 
@@ -126,16 +148,10 @@ st.plotly_chart(
     use_container_width=True
 )
 
+st.subheader("Summary Statistics")
 
-st.subheader("Reasons for Automation")
-
-reason = automation_reasons(df)
-
-fig = pie(reason)
-
-st.plotly_chart(
-    fig,
-    use_container_width=True
+st.dataframe(
+    df.describe().T
 )
 
 st.subheader("Dataset")
@@ -154,4 +170,10 @@ st.download_button(
     csv,
     file_name="filtered_dataset.csv",
     mime="text/csv"
+)
+
+st.divider()
+
+st.caption(
+    "Developed with Streamlit • Plotly • Pandas"
 )
